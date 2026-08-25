@@ -1,0 +1,34 @@
+services:
+  anki:
+    image: thisisnttheway/headless-anki:latest
+#    volumes:
+#      - ./anki_data:/data
+#      - ./export:/export
+    networks:
+      ankibot_default:
+    restart: unless-stopped
+
+  libretranslate:
+    image: libretranslate/libretranslate
+    networks:
+      - ankibot_default
+    restart: unless-stopped
+
+  bot:
+    image: ghcr.io/GlackyBagy/ankibot:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      tags:
+        - ankibot:latest
+    env_file:
+      - .env
+    environment:
+      - ANKI_CONNECT_ADDRESS=http://anki:8765
+      - LIBRETRANSLATE_ADDRESS=http://libretranslate:5000
+    networks:
+      - ankibot_default
+
+
+networks:
+  ankibot_default:
