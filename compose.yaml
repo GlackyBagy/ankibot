@@ -9,12 +9,15 @@ services:
 
   libretranslate:
     image: libretranslate/libretranslate
+    user: "0:0"
+    volumes:
+      - libretranslate_data:/home/libretranslate/.local/share/argos-translate
     networks:
       - ankibot_default
     restart: unless-stopped
 
   bot:
-    image: ghcr.io/GlackyBagy/ankibot:latest
+    image: ghcr.io/glackybagy/ankibot:latest
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -35,3 +38,6 @@ services:
 
 networks:
   ankibot_default:
+
+volumes:
+  libretranslate_data:
