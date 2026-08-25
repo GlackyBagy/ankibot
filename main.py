@@ -81,6 +81,7 @@ async def _save_japanese_entry(entry: dict) -> tuple[str, str, str]:
     await anki_client.ensure_deck(deck_name)
     await anki_client.add_basic_note(deck_name, front=kanji, back=f"{reading} — {meaning}")
     await anki_client.add_basic_note(deck_name, front=meaning, back=f"{kanji} ({reading})")
+    await anki_client.sync()
 
     return kanji, reading, meaning
 
@@ -132,6 +133,7 @@ async def add_word(message: types.Message):
     deck_name = DECK_NAME_OVERRIDES.get(detected, detected)
     await anki_client.ensure_deck(deck_name)
     await anki_client.add_basic_reversed_note(deck_name, front=text, back=translated)
+    await anki_client.sync()
 
     await message.answer(t("word_added", ui_lang, deck=deck_name, translation=translated))
 

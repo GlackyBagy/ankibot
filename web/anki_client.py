@@ -43,3 +43,7 @@ async def add_basic_note(deck_name: str, front: str, back: str) -> None:
 
 async def add_basic_reversed_note(deck_name: str, front: str, back: str) -> None:
     await _add_note(deck_name, "Basic (and reversed card)", front, back)
+
+
+async def sync() -> None:
+    await _invoke("sync")
