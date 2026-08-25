@@ -1,8 +1,18 @@
 services:
   anki:
     image: thisisnttheway/headless-anki:latest
+    user: "0:0"
+    environment:
+      - QTWEBENGINE_DISABLE_SANDBOX=1
     volumes:
       - ./anki_data:/data
+    # The AnkiConnect symlink is baked into the image's own /data at build
+    # time, so bind-mounting a host directory over /data wipes it out.
+    # Recreate it on every start before handing off to the image's own entrypoint.
+    command: >
+      /bin/bash -c "mkdir -p /data/addons21 &&
+      ln -sf /app/anki-connect/plugin /data/addons21/AnkiConnectDev &&
+      exec /bin/bash /app/startup.sh"
     networks:
       ankibot_default:
     restart: unless-stopped
