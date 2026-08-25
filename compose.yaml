@@ -1,9 +1,8 @@
 services:
   anki:
     image: thisisnttheway/headless-anki:latest
-#    volumes:
-#      - ./anki_data:/data
-#      - ./export:/export
+    volumes:
+      - ./anki_data:/data
     networks:
       ankibot_default:
     restart: unless-stopped
@@ -28,6 +27,10 @@ services:
       - LIBRETRANSLATE_ADDRESS=http://libretranslate:5000
     networks:
       - ankibot_default
+    restart: unless-stopped
+    depends_on:
+      - anki
+      - libretranslate
 
 
 networks:
