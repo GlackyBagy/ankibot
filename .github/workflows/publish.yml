@@ -3,6 +3,10 @@ name: Build and publish
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "compose.yaml"
+      - "LICENSE"
+      - "README.md"
 
 env:
   REGISTRY: ghcr.io
